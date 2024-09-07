@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PasteBeen by Alex</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div style="" class="mx-auto main-body">
+    <h1>PasteBeen by Alex</h1>
+    <hr>
+    {% if been %}
+        <label for="been_hash">Ваша ссылка на сообщение</label>
+        <input type="text" id="been_hash" value="{{ request.base_url }}{{ been.hash }}" style="width:50%;">
+        <p>Текст будет удален: {{ been.expire.strftime('%d.%m.%Y %H:%M') }}</p>
+        <hr>
+    {% endif %}
+    <form action="/" method="post" id="main-form" style="font-size: 20px;">
+        <textarea name="text" id="text" class="" rows="10" >{% if been %}{{ been.text }}{% endif%}</textarea>
+        <input type="text" disabled hidden>
+        <div class="d-flex justify-content-between">
+            <div id="expire">
+                <label for="days">Будет удалено через</label>
+                <input type="text" value="0" name="days" id="days" style="width:50px">
+                <label for="days">дней</label>
+                <input type="text" value="20" name="minutes" id="minutes" style="width:50px">
+                <label for="minutes">минут.</label>
+            </div>
+            <button style="float: right; width: 10%" type="submit" class="btn btn-primary ">Создать</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
