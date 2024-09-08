@@ -8,7 +8,7 @@ from starlette.responses import HTMLResponse
 from schemas.beens import SBeenAdd
 from backend.repository import BeenRepository
 
-router = APIRouter(prefix='', tags=['Front'])
+router = APIRouter(prefix='/pastebeen', tags=['Front'])
 templates = Jinja2Templates(directory='templates')
 
 
