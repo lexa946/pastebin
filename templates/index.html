@@ -20,7 +20,7 @@
         <p>Текст будет удален: {{ been.expire.strftime('%d.%m.%Y %H:%M') }}</p>
         <hr>
     {% endif %}
-    <form action="/" method="post" id="main-form" style="font-size: 20px;">
+    <form action="/pastebeen" method="post" id="main-form" style="font-size: 20px;">
         <textarea name="text" id="text" class="" rows="10" >{% if been %}{{ been.text }}{% endif%}</textarea>
         <input type="text" disabled hidden>
         <div class="d-flex justify-content-between">
