@@ -16,7 +16,7 @@
     <hr>
     {% if been %}
         <label for="been_hash">Ваша ссылка на сообщение</label>
-        <input type="text" id="been_hash" value="{{ request.base_url }}{{ been.hash }}" style="width:50%;">
+        <input type="text" id="been_hash" value="{{ request.base_url }}pastebeen/{{ been.hash }}" style="width:50%;">
         <p>Текст будет удален: {{ been.expire.strftime('%d.%m.%Y %H:%M') }}</p>
         <hr>
     {% endif %}
