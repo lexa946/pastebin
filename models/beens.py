@@ -13,3 +13,4 @@ class BeenOrm(Base):
     text: Mapped[str]
     hash: Mapped[str] = mapped_column(unique=True)
     expire: Mapped[datetime|None] = mapped_column(default=None)
+    delete_it: Mapped[bool] = mapped_column(default=False)

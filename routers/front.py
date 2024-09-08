@@ -18,9 +18,9 @@ async def index(request: Request) -> HTMLResponse:
         "request": request
     })
 
+
 @router.get('/{hash}')
 async def get_been_at_hash(request: Request, hash: str) -> HTMLResponse:
-
     been = await BeenRepository.get_at_hash(hash)
     if not been:
         raise HTTPException(
@@ -28,11 +28,14 @@ async def get_been_at_hash(request: Request, hash: str) -> HTMLResponse:
             detail=f'Been with a hash {hash} not found.'
         )
 
-    if been.expire < datetime.now():
+    if been.expire and been.expire < datetime.now():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='This been is expire!'
         )
+
+    if been.delete_it:
+        await BeenRepository.delete_at_hash(hash)
 
     return templates.TemplateResponse("index.html", {
         "request": request, "been": been
@@ -42,19 +45,16 @@ async def get_been_at_hash(request: Request, hash: str) -> HTMLResponse:
 @router.post('/')
 async def add_been(request: Request, text: str = Form(),
                    days: int = Form(), minutes: int = Form(),
-                   ) -> HTMLResponse:
-
-    # request.base_url
+                   delete_it: Annotated[bool, Form()] = False) -> HTMLResponse:
     expire_date = datetime.now() + timedelta(days=days, minutes=minutes)
 
     new_been = SBeenAdd(
         text=text,
-        expire=expire_date
+        expire=expire_date,
+        delete_it=delete_it,
     )
     new_been = await BeenRepository.add(new_been)
 
     return templates.TemplateResponse("index.html", {
         "request": request, "been": new_been
     })
-
-

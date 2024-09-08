@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from schemas.beens import SBeenAdd, SBeen
@@ -44,3 +44,14 @@ class BeenRepository:
             if not been:
                 return None
             return been
+
+
+    @classmethod
+    async def delete_at_hash(cls, hash: str) -> None:
+        async with new_session() as db:
+            db: AsyncSession
+
+            await db.execute(
+                delete(BeenOrm).where(BeenOrm.hash == hash)
+            )
+            await db.commit()

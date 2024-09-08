@@ -1,17 +1,21 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pydantic import BaseModel, ConfigDict
 
 
 class SBeenAdd(BaseModel):
     text: str
-    expire: datetime | None = None
+    expire: datetime | None = datetime.now() + timedelta(minutes=20)
+    delete_it: bool = False
+
 
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {"text": "My seconds shared text!",
-                 "expire": "2024-09-07T22:20:55.384477"},
+                 "expire": "2024-09-07T22:20:55.384477",
+                 "delete_it": False,
+                 },
             ]
         }
     }

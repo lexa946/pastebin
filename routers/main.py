@@ -5,7 +5,7 @@ from fastapi import APIRouter, Form, Depends, HTTPException
 from starlette import status
 
 from schemas.beens import SBeenAdd, SBeen
-from schemas.responses import SBeenResponse, SBeensResponse
+from schemas.responses import SBeenResponse, SBeensResponse, SBaseResponse
 from backend.repository import BeenRepository
 
 router = APIRouter(prefix='/api/v1', tags=['Beens'])
@@ -41,13 +41,27 @@ async def get_at_hash(hash: str) -> SBeenResponse:
             detail=f'Been with a hash {hash} not found.'
         )
 
-    if been.expire < datetime.now():
+    if been.expire and been.expire < datetime.now():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='This been is expire!'
         )
 
+    if been.delete_it:
+        await delete_at_hash(hash)
+
     return {
         'status_code': status.HTTP_200_OK,
         'been': been
+    }
+
+
+
+@router.delete('/{hash}')
+async def delete_at_hash(hash: str) -> SBaseResponse:
+    await BeenRepository.delete_at_hash(hash)
+
+    return {
+        'status_code': status.HTTP_200_OK,
+        'detail': f'Been with a hash {hash} deleted.',
     }
