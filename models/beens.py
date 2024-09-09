@@ -8,7 +8,6 @@ from backend.db import Base
 class BeenOrm(Base):
     __tablename__ = 'beens'
 
-
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     text: Mapped[str]
     hash: Mapped[str] = mapped_column(unique=True)
