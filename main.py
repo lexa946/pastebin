@@ -9,6 +9,6 @@ app = FastAPI()
 app.include_router(main.router)
 app.include_router(front.router)
 
-app.mount('/static/pastebeen', StaticFiles(directory="static"), 'static')
+app.mount('/static/pastebeen', StaticFiles(directory="static/pastebeen"), 'static_pastebeen')
 
 
